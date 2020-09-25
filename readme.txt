@@ -37,6 +37,6 @@
       programa, entretanto é recomendável.
       
       A opção 3 excluirá todos os jogos já registrados até então, sem chance de
-      recuperálos
+      recuperálos.
       
 *** ///////////////////// ***
