@@ -2,7 +2,7 @@
       O programa pode ser executado desta maneira: pelo terminal, 
       vá até o diretório do programa e digite o nome. Caso não funcione,
       ainda no diretório do programa, digite './' seguido do nome do
-      programa ('./main', por exemplo).
+      programa ('./Tabela para Jogos', por exemplo).
       
 *** ///////////////////// ***
 
@@ -11,7 +11,7 @@
       O programa pode ser executado apenas clicando sobre o 
       executável, ou pelo cmd: navegue até o diretório do
       programa e digite o nome do programa seguido por '.exe'
-      ('main.exe', por exemplo). Há possibilidade de um erro
+      ('Tabela para Jogos.exe', por exemplo). Há possibilidade de um erro
       ocorrer devido a ausência da dll libgcc_s_dw2-1; para tanto,
       apenas instale-a.
       
