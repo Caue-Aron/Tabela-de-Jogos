@@ -1,17 +1,48 @@
+/*********************************************************************
+ * DEFINES PARA PREVENIR MULTIPLAS DEFINICOES
+ ********************************************************************/
 #ifndef JOGOS
 #define JOGOS
 
+/*********************************************************************
+ * DEFINES
+ ********************************************************************/
+/**
+ * comando rapido para limpar a tela.
+ * Cada versao de sistema possui sua propria versao
+ */
 #define CLEAN system("clear")
 
+/*********************************************************************
+ * INCLUDES
+ ********************************************************************/
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
 #include <typeinfo>
 
+/*********************************************************************
+ * CLASSES
+ ********************************************************************/  
+/**
+ * Esta classe contem a informacao de um jogos especifico,
+ * como placar, recordes, etc.
+ */
 class Jogos
 {
 
+/*********************************************************************
+ * SOBRECARGAS
+ ********************************************************************/
+/**
+ * Todas as sobrecargas permitem chamada em cascata.
+ */
+
+/**
+ * Sobrecarga do operador '<<' para que objetos Jogos possam
+ * ser gravados externamente com objetos ofstream.
+ */
 friend std::ofstream& operator<<(std::ofstream& out, Jogos jogo)
 {
     out << jogo.placar << " " << jogo.min_temp << " " << jogo.max_temp
@@ -20,6 +51,11 @@ friend std::ofstream& operator<<(std::ofstream& out, Jogos jogo)
     return out;
 }
 
+
+/**
+ * Sobrecarga do operador '>>' para que objetos Jogos possam
+ * ser carregados apartir de arquivos externos com objetos ifstream.
+ */
 friend std::ifstream& operator>>(std::ifstream& in, Jogos& jogo)
 {
     in >> jogo.placar >> jogo.min_temp >> jogo.max_temp
@@ -28,11 +64,20 @@ friend std::ifstream& operator>>(std::ifstream& in, Jogos& jogo)
     return in;
 }
 
+
+
+/********************************************************************************/
 private:
+    // informacoes de cada jogo
     int placar, max_temp, min_temp, rec_min, rec_max;
 
+
+/********************************************************************************/
 public:
-    void getJogo()
+    /**
+     * Imprime as informcoes do jogo
+     */
+    void printJogo()
     {
         int precision = 10;
 
@@ -44,6 +89,12 @@ public:
         rec_max << std::endl;
     }
 
+
+    /**
+     * Pede para que o usuario insira um placar
+     * para que o jogo e suas informacoes possam ser
+     * formulados.
+     */
     void setJogo()
     {
         int decisao = 1;
@@ -86,6 +137,10 @@ public:
         rec_min = rec_max = 0;
     }
 
+
+    /**
+     * Getters e setters de cada variavel private
+     */
     int getPlacar() { return placar; }
     void setPlacar(int val) { placar = val; }
 

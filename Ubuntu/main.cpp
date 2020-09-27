@@ -1,3 +1,6 @@
+/*********************************************************************
+ * INCLUDES
+ ********************************************************************/
 #include <iomanip>
 #include <fstream>
 #include <exception>
@@ -6,6 +9,44 @@
 #include <iterator>
 #include "Jogos.hpp"
 
+/*********************************************************************
+ * IMPORTANTES
+ ********************************************************************/
+/**
+ * codigos semelhantes a esse:
+
+    int decisao;
+    std::cin >> decisao;
+
+    while(1)
+    {           
+        if( (decisao < 0 || decisao > 3) || !std::cin) -> caso o input esteja errado
+        {
+            std::cin.clear(); -> limpa o as flags de erro de cin
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); -> ignora o input indevido
+
+            std::cout << std::endl << std::endl << std::endl << "Opção inválida. Escolha novamente: ";
+            -> alerta o usuario que o input foi erroneo
+
+            std::cin >> decisao; -> permite ao usuario inserir novo input
+        }
+        else break;
+    }
+
+ * servem para pegar e validar o input do usuario
+ * 
+ ****************************************************************
+ * Todas as funcoes desse arquivo, exceto main e loadJogos,
+ * recebem o endereço de memoria de um vector da classe
+ * Jogos. Os vectors passados de funcao em funcao representam
+ * o mesmo vector criado em main, retornado por loadJogos.
+ */
+
+
+
+/**********************************************************************
+ * PROTOTIPOS
+ *********************************************************************/
 void inputJogos(std::vector<Jogos>& jogos);
 bool calculos(std::vector<Jogos>& jogos);
 void printTabela(std::vector<Jogos>& jogos);
@@ -15,11 +56,24 @@ void saveJogos(std::vector<Jogos>& jogos);
 std::vector<Jogos> loadJogos();
 void alteraJogo(std::vector<Jogos>& jogos);
 
+/**********************************************************************
+ * FUNCAO MAIN
+ *********************************************************************/
+/**
+ * Aqui ocorre a criacao do vector da
+ * classe Jogos que vai ser passada para
+ * todas as funcoes, excluindo a 
+ * loadJogos() (pois essa cria o vector e
+ * o retorna para o vector de main).
+ * Main nao precisa de argumentos para inicializar.
+ */
 int main(int argc, char const *argv[])
 {
     CLEAN;
     std::vector<Jogos> jogos = loadJogos();
 
+    /*essa variavel define quando o 
+    programa deve sair do loop principal*/
     bool run = true;
     while(run)
     {
@@ -35,8 +89,18 @@ int main(int argc, char const *argv[])
 
 
 
-
-
+/**********************************************************************
+ * IMPLEMENTACOES
+ *********************************************************************/
+/**
+ * Carrega os jogos ja salvos.
+ * Caso nao exista, a funcao
+ * cria esse arquivo, que vai
+ * estar vazio.
+ * Retorna um vetor da classe
+ * Jogos, gerado apartir do
+ * arquivo externo.
+ */
 std::vector<Jogos> loadJogos()
 {
     std::ifstream load_file("Saves.txt");
@@ -57,6 +121,11 @@ std::vector<Jogos> loadJogos()
     return jogos;
 }
 
+
+
+/**
+ * Salva os jogos existentes no programa.
+ */
 void saveJogos(std::vector<Jogos>& jogos)
 {
     std::ofstream save_file("Saves.txt", std::ios::out);
@@ -72,13 +141,25 @@ void saveJogos(std::vector<Jogos>& jogos)
     }
 }
 
+
+
+/**
+ * Mostra na tela o menu principal
+ * e fornece ao usuario a possibilidade de:
+ * ver a tabela de jogos, registrar novos jogos,
+ * sair e deletar todos os jogos existentes.
+ * 
+ * A funcao retorna um bool que define se o 
+ * programa sai do loop principal (caso o usu-
+ * ario queira).
+ */
 bool printMenu(std::vector<Jogos>& jogos)
 {
     CLEAN;
     saveJogos(jogos);
 
     std::cout << "O que deseja fazer? " << std::endl <<
-    "[0] Ver tabela de treinos" << std::endl <<
+    "[0] Ver tabela de jogos" << std::endl <<
     "[1] Inserir jogo" << std::endl <<
     "[2] Sair" << std::endl <<
     "[3] Voltar a 'versão de fábrica'" << std::endl;
@@ -120,6 +201,13 @@ bool printMenu(std::vector<Jogos>& jogos)
     return true;
 }
 
+
+/**
+ * A funcao exclui todos os jogos ja registrados.
+ * 
+ * Por seguranca, a funcao pede que o usuario
+ * confirme duas vezes sua decisao.
+ */
 void reset(std::vector<Jogos>& jogos)
 {
     CLEAN;
@@ -159,6 +247,12 @@ void reset(std::vector<Jogos>& jogos)
     }
 }
 
+
+/**
+ * Esta funcao mostra todos os jogos ja registrados
+ * e pede que o usuario informe qual deles deve ser
+ * excluido, ou se deseja cancelar a acao
+ */
 void deleteJogo(std::vector<Jogos>& jogos)
 {
     CLEAN;
@@ -174,7 +268,7 @@ void deleteJogo(std::vector<Jogos>& jogos)
     for(int i = 0; it != jogos.end(); it++, i++)
     {
         std::cout << std::left << std::setw(10) << i + 1;
-        it->getJogo();
+        it->printJogo();
     }
 
     std::cout << std::endl << "Escolha o número do jogo que você quer excluir ou digite -1 para cancelar: ";
@@ -211,6 +305,13 @@ void deleteJogo(std::vector<Jogos>& jogos)
     jogos.erase(it);
 }
 
+
+/**
+ * Imprime a tabela com todos os jogos e suas
+ * informacoes. Recebe input do usuario, este
+ * informa se quer voltar ao menu principal,
+ * alterar ou excluir quaisquer jogos existentes
+ */
 void printTabela(std::vector<Jogos>& jogos)
 {
     CLEAN;  
@@ -234,7 +335,7 @@ void printTabela(std::vector<Jogos>& jogos)
     for(int i = 0; i < jogos.size(); i++)
     {
         std::cout << std::left << std::setw(10) << i + 1;
-        jogos[i].getJogo();
+        jogos[i].printJogo();
     }
 
     std::cout << std::endl << std::endl << "[0] Voltar para o menu" << std::endl <<
@@ -272,6 +373,11 @@ void printTabela(std::vector<Jogos>& jogos)
     }
 }
 
+
+/**
+ * A funcao ira determinar todas as informacoes como
+ * recordes e maximos da temporada apartir do placar
+ */
 bool calculos(std::vector<Jogos>& jogos)
 {
     if(jogos.empty())
@@ -304,6 +410,11 @@ bool calculos(std::vector<Jogos>& jogos)
     return true;
 }
 
+
+/**
+ * A funcao requisita ao usuario para inserir um ou
+ * mais placares de jogos.
+ */
 void inputJogos(std::vector<Jogos>& jogos)
 {
     int decisao = 1;
@@ -333,6 +444,12 @@ void inputJogos(std::vector<Jogos>& jogos)
     saveJogos(jogos);
 }
 
+
+/**
+ * Esta funcao exibe a tabela e pergunta ao usuario
+ * qual dos jogos ele deseja alterar ou se deseja
+ * abortar a acao
+ */
 void alteraJogo(std::vector<Jogos>& jogos)
 {
     CLEAN;
@@ -347,7 +464,7 @@ void alteraJogo(std::vector<Jogos>& jogos)
     for(int i = 0; i < jogos.size(); i++)
     {
         std::cout << std::left << std::setw(10) << i + 1;
-        jogos[i].getJogo();
+        jogos[i].printJogo();
     }
 
     std::cout << std::endl << "Escolha o número do jogo que você quer alterar ou digite -1 para cancelar: ";
